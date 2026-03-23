@@ -96,8 +96,8 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full shadow-lg border-2 border-white flex items-center justify-center overflow-hidden" style={{ background: "linear-gradient(90deg, #FFB6C1 50%, #87CEEB 50%)" }}>
                  <div className="w-14 h-14 rounded-full border border-white/40 shadow-inner flex items-center justify-center bg-transparent backdrop-blur-sm"><div className="w-8 h-8 rounded-full bg-white/20"></div></div>
               </div>
-              <p className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.3em] uppercase text-gray-500 font-bold whitespace-nowrap">PARA: {nombre}</p>
-              <p className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[9px] tracking-widest uppercase text-gray-400 w-full text-center">Click para abrir con cariño</p>
+              <p className="absolute -bottom-12 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.4em] uppercase text-gray-400 w-full text-center font-bold">REVELACIÓN DE GÉNERO</p>
+              <p className="absolute -bottom-20 left-1/2 -translate-x-1/2 text-[9px] tracking-widest uppercase text-gray-400 w-full text-center">Click para abrir la invitación</p>
             </div>
           </motion.div>
         ) : (
@@ -107,7 +107,7 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                 src="/assets/revelacion.mp4" 
                 controls 
                 className="w-full h-full object-cover"
-                poster="/assets/user_boss_both.png"
+                poster="/assets/video.png"
                 playsInline
               />
               <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30 pointer-events-none">
