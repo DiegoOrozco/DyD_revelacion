@@ -100,10 +100,16 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
           </motion.div>
         ) : (
           <motion.div key="content-view" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="w-full min-h-screen flex flex-col items-center pt-12 pb-24 px-6 max-w-md mx-auto relative z-10">
-            <div className="w-full mb-8 relative rounded-2xl overflow-hidden shadow-lg border-4 border-white aspect-video bg-gray-200">
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/10">
-                <div className="w-16 h-16 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center cursor-pointer hover:bg-white/80 transition-all"><div className="w-0 h-0 border-t-8 border-t-transparent border-l-[16px] border-l-pink-500 border-b-8 border-b-transparent ml-2"></div></div>
-                <p className="mt-2 text-sm font-bold text-gray-700 tracking-widest uppercase bg-white/50 px-3 py-1 rounded-full backdrop-blur-sm">Ver Video</p>
+            <div className="w-full mb-12 relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white aspect-[9/16] bg-black group">
+              <video 
+                src="/assets/revelacion.mp4" 
+                controls 
+                className="w-full h-full object-cover"
+                poster="/assets/user_boss_both.png"
+                playsInline
+              />
+              <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30 pointer-events-none">
+                <p className="text-[10px] font-bold text-white uppercase tracking-widest">Video Especial</p>
               </div>
             </div>
             <div className="text-center mb-8">
@@ -162,21 +168,22 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
               <div className="flex justify-between w-full gap-4 relative">
                 {/* Confetti Particles Layer */}
                 <AnimatePresence>
-                  {showConfetti && Array.from({ length: 15 }).map((_, i) => {
-                    const myParticle = particles.filter(p => p.color === (selectedTeam === 'boy' ? 'blue' : 'pink'))[i % 5];
+                  {showConfetti && Array.from({ length: 30 }).map((_, i) => {
+                    const myTeam = selectedTeam || 'boy';
+                    const myParticle = particles.filter(p => p.color === (myTeam === 'boy' ? 'blue' : 'pink'))[i % 5];
                     return (
                       <motion.div
                         key={`confetti-${i}`}
                         initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
                         animate={{ 
-                          opacity: [1, 1, 0], 
-                          scale: [1, 1.5, 0.5],
-                          x: (Math.random() - 0.5) * 400, 
-                          y: (Math.random() - 0.5) * 400 - 100, 
-                          rotate: Math.random() * 360 
+                          opacity: [1, 1, 0.8, 0], 
+                          scale: [1, 2, 1.5, 1],
+                          x: (Math.random() - 0.5) * 1000, 
+                          y: (Math.random() - 0.5) * 1200 - 200, 
+                          rotate: Math.random() * 720 
                         }}
-                        transition={{ duration: 2.5, ease: "easeOut" }}
-                        className="fixed pointer-events-none z-50 text-3xl"
+                        transition={{ duration: 4.5, ease: "easeOut" }}
+                        className="fixed pointer-events-none z-[100] text-4xl"
                         style={{ left: '50%', top: '40%' }}
                       >
                         {myParticle.emoji}
