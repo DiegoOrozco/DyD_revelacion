@@ -88,15 +88,16 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
               <div className="w-[300px] h-[200px] bg-white rounded-lg shadow-xl relative overflow-hidden flex items-center justify-center border border-gray-100">
                 <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 300 200"><path d="M0,0 L150,100 L300,0" fill="none" stroke="#000" strokeWidth="2" opacity="0.1"/></svg>
               </div>
-              <motion.div className="absolute -top-[160px] left-1/2 -translate-x-1/2 flex items-end justify-center w-[400px] pointer-events-none" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
-                <div className="w-[320px] h-[220px] relative top-8 z-20" style={{ filter: 'url(#remove-bg)' }}>
+              <motion.div className="absolute -top-[120px] left-1/2 -translate-x-1/2 flex items-end justify-center w-[300px] pointer-events-none" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
+                <div className="w-[200px] h-[140px] relative top-10 z-20" style={{ filter: 'url(#remove-bg)' }}>
                   <Image src="/assets/portada.png" alt="Boss Babies" fill className="object-contain" />
                 </div>
               </motion.div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full shadow-lg border-2 border-white flex items-center justify-center overflow-hidden" style={{ background: "linear-gradient(90deg, #FFB6C1 50%, #87CEEB 50%)" }}>
                  <div className="w-14 h-14 rounded-full border border-white/40 shadow-inner flex items-center justify-center bg-transparent backdrop-blur-sm"><div className="w-8 h-8 rounded-full bg-white/20"></div></div>
               </div>
-              <p className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-xs tracking-widest uppercase text-gray-600 w-full text-center">Click para abrir la invitación</p>
+              <p className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] tracking-[0.3em] uppercase text-gray-500 font-bold whitespace-nowrap">PARA: {nombre}</p>
+              <p className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[9px] tracking-widest uppercase text-gray-400 w-full text-center">Click para abrir con cariño</p>
             </div>
           </motion.div>
         ) : (
