@@ -30,6 +30,7 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const [confirmedAs, setConfirmedAs] = useState<'mama' | 'papa' | null>(null);
+  const [selectedTeam, setSelectedTeam] = useState<'boy' | 'girl' | null>(null);
 
   const handleConfirm = async () => {
     setIsConfirming(true);
@@ -134,15 +135,60 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   )}
                </div>
             </div>
-            <div className="w-full flex justify-between px-2 mb-20 gap-4 relative">
-              <div className="flex flex-col items-center w-1/2 relative">
-                <div className="w-full h-[220px] relative pointer-events-none" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boy" fill className="object-contain" /></div>
-                <p className="text-[10px] text-blue-500 font-bold uppercase tracking-widest mt-2">VISTE DE CELESTE</p>
+            {/* 9. Teams Section (Interactive Version) */}
+            <div className="w-full flex flex-col items-center mb-20 relative bg-white/40 p-6 rounded-[2.5rem] backdrop-blur-md border-2 border-white shadow-xl">
+              <h2 className="font-boss text-2xl text-gray-800 mb-6 uppercase tracking-widest text-center w-full">¿QUÉ TEAM ERES?</h2>
+              
+              <div className="flex justify-between w-full gap-4 relative">
+                {/* Team Boy Button */}
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedTeam(selectedTeam === 'boy' ? null : 'boy')}
+                  className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'boy' ? 'bg-[#87CEEB] border-white shadow-lg' : 'bg-white/50 border-transparent'}`}
+                >
+                  <div className="w-full h-24 mb-2 relative" style={{ filter: 'url(#remove-bg)' }}>
+                    <Image src="/assets/user_boss_boy.png" alt="Boy" fill className="object-contain" />
+                  </div>
+                  <span className={`font-boss tracking-wider text-xs uppercase ${selectedTeam === 'boy' ? 'text-white' : 'text-blue-500'}`}>NIÑO</span>
+                </motion.button>
+
+                {/* Team Girl Button */}
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedTeam(selectedTeam === 'girl' ? null : 'girl')}
+                  className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'girl' ? 'bg-[#FFB6C1] border-white shadow-lg' : 'bg-white/50 border-transparent'}`}
+                >
+                  <div className="w-full h-24 mb-2 relative" style={{ filter: 'url(#remove-bg)' }}>
+                    <Image src="/assets/user_boss_girl.png" alt="Girl" fill className="object-contain" />
+                  </div>
+                  <span className={`font-boss tracking-wider text-xs uppercase ${selectedTeam === 'girl' ? 'text-white' : 'text-pink-500'}`}>NIÑA</span>
+                </motion.button>
               </div>
-              <div className="flex flex-col items-center w-1/2 relative mt-4">
-                <div className="w-full h-[180px] relative pointer-events-none mt-10" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Girl" fill className="object-contain" /></div>
-                <p className="text-[10px] text-pink-500 font-bold uppercase tracking-widest mt-2">VISTE DE ROSADO</p>
-              </div>
+
+              {/* Dynamic Information Reveal */}
+              <AnimatePresence mode="wait">
+                {selectedTeam && (
+                  <motion.div 
+                    key={selectedTeam}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden w-full"
+                  >
+                    <div className="mt-8 p-6 rounded-[1.5rem] border-2 border-white shadow-inner bg-white/60 text-center">
+                      <p className={`text-[11px] font-extrabold uppercase tracking-[0.2em] leading-relaxed ${selectedTeam === 'boy' ? 'text-blue-600' : 'text-pink-600'}`}>
+                        {selectedTeam === 'boy' ? (
+                          <>VISTE DE CELESTE Y<br/>TRAE PAÑALES</>
+                        ) : (
+                          <>VISTE DE ROSADO Y<br/>TRAE TOALLITAS</>
+                        )}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         )}
