@@ -155,7 +155,7 @@ export default function InvitationContent({ params }: { params: Promise<{ slug: 
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="w-full min-h-screen flex flex-col items-center pt-12 pb-24 px-6 max-w-lg mx-auto relative z-10"
+            className="w-full min-h-screen flex flex-col items-center pt-12 pb-24 px-6 max-w-md mx-auto relative z-10"
           >
             {/* 1. Video Section */}
             <div className="w-full mb-8 relative rounded-2xl overflow-hidden shadow-lg border-4 border-white aspect-video bg-gray-200">
