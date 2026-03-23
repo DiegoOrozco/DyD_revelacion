@@ -120,8 +120,8 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   <h1 className="font-elegant text-5xl text-girl-pink drop-shadow-md ml-12 relative z-20 italic">De género</h1>
                </div>
             </div>
-            <div className="flex justify-center items-end gap-0 mb-10 h-60 relative w-full">
-                <div className="w-[360px] h-full relative z-10" style={{ filter: 'url(#remove-bg)' }}>
+            <div className="flex justify-center items-end gap-0 mb-10 h-80 relative w-full scale-110">
+                <div className="w-full h-full relative z-10" style={{ filter: 'url(#remove-bg)' }}>
                   <Image src="/assets/portada.png" alt="Boss Babies Unified" fill className="object-contain" />
                 </div>
             </div>
