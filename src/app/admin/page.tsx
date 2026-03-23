@@ -5,18 +5,20 @@ import { motion } from 'framer-motion';
 import { Users, UserPlus, Link, Copy, CheckCircle, Briefcase, Trash2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-interface Confirmation {
+interface Invitation {
   id: string;
   guest_name: string;
   slots_assigned: number;
+  ha_confirmado: boolean;
   created_at: string;
+  confirmed_at?: string;
 }
 
 export default function AdminPage() {
   const [guestName, setGuestName] = useState('');
   const [slots, setSlots] = useState('1');
   const [generatedLink, setGeneratedLink] = useState('');
-  const [confirmations, setConfirmations] = useState<Confirmation[]>([]);
+  const [confirmations, setConfirmations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -30,7 +32,7 @@ export default function AdminPage() {
         .channel('schema-db-changes')
         .on(
           'postgres_changes',
-          { event: '*', schema: 'public', table: 'confirmations' },
+          { event: '*', schema: 'public', table: 'invitations' },
           () => {
             fetchConfirmations();
           }
@@ -248,7 +250,7 @@ export default function AdminPage() {
                   <tr className="text-left border-b border-gray-100">
                     <th className="pb-4 text-xs font-bold opacity-40 uppercase">Invitado</th>
                     <th className="pb-4 text-xs font-bold opacity-40 uppercase text-center">Cupos</th>
-                    <th className="pb-4 text-xs font-bold opacity-40 uppercase text-center">Hora</th>
+                    <th className="pb-4 text-xs font-bold opacity-40 uppercase text-center">Estado</th>
                     <th className="pb-4 text-xs font-bold opacity-40 uppercase text-right">Acción</th>
                   </tr>
                 </thead>
@@ -266,21 +268,23 @@ export default function AdminPage() {
                       <tr key={conf.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                         <td className="py-5">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 boss-gradient-blue rounded-lg flex items-center justify-center text-white font-boss text-xs">
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-boss text-xs ${conf.ha_confirmado ? 'bg-green-500' : 'bg-gray-300'}`}>
                               {conf.guest_name[0]}
                             </div>
                             <span className="font-bold">{conf.guest_name}</span>
                           </div>
                         </td>
                         <td className="py-5 text-center font-boss text-boss">{conf.slots_assigned}</td>
-                        <td className="py-5 text-center text-xs opacity-50">
-                          {new Date(conf.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
+                        <td className="py-5 text-center">
+                          <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${conf.ha_confirmado ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                            {conf.ha_confirmado ? 'Confirmado' : 'Pendiente'}
+                          </span>
                         </td>
                         <td className="py-5 text-right">
                           <button 
                             onClick={() => handleDelete(conf.id, conf.guest_name)}
                             className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
-                            title="Eliminar Invitado"
+                            title="Eliminar Invitación"
                           >
                             <Trash2 size={18} />
                           </button>

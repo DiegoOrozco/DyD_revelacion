@@ -1,31 +1,59 @@
 'use client';
 
-import { Suspense, useState, use } from 'react';
+import { Suspense, useState, use, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircleHeart, CheckCircle2 } from 'lucide-react';
+import { MessageCircleHeart, CheckCircle2, Users } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
+
+interface InvitationData {
+  id: string;
+  guest_name: string;
+  slots_assigned: number;
+  ha_confirmado: boolean;
+}
 
 export function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
-  const searchParams = useSearchParams();
+  const [invitation, setInvitation] = useState<InvitationData | null>(null);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Logic to parse slug (format: Name_Guests) or fallback to searchParams
-  let nombre = 'Invitado Especial';
-  let cupos = '1';
+  // Logic to fetch invitation by ID
+  useEffect(() => {
+    const fetchInvite = async () => {
+      if (!slug || slug === 'page') {
+        setLoading(false);
+        return;
+      }
 
-  if (slug && slug !== 'page') {
-    const parts = slug.split('_');
-    if (parts.length >= 1) {
-       nombre = decodeURIComponent(parts[0].replace(/-/g, ' '));
-       if (parts.length >= 2) cupos = parts[1];
-    }
-  } else {
-    nombre = searchParams.get('nombre') || 'Invitado Especial';
-    cupos = searchParams.get('cupos') || '1';
-  }
+      try {
+        const { data, error } = await supabase
+          .from('invitations')
+          .select('*')
+          .eq('id', slug)
+          .single();
+
+        if (error || !data) {
+          setError(true);
+        } else {
+          setInvitation(data);
+          if (data.ha_confirmado) setConfirmedAs('mama');
+        }
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvite();
+  }, [slug]);
+
+  const nombre = invitation?.guest_name || 'Invitado Especial';
+  const cupos = invitation?.slots_assigned || '1';
 
   const [isOpen, setIsOpen] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
@@ -53,21 +81,44 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
   ];
 
   const handleConfirm = async () => {
+    if (!invitation) return;
     setIsConfirming(true);
     try {
       const { error } = await supabase
-        .from('confirmations')
-        .insert([{ guest_name: nombre, slots_assigned: parseInt(cupos), ha_confirmado: true }]);
+        .from('invitations')
+        .update({ ha_confirmado: true, confirmed_at: new Date().toISOString() })
+        .eq('id', invitation.id);
       
       if (error) throw error;
       setConfirmedAs('mama'); 
     } catch (err) {
       console.error('Error confirming:', err);
+      // Fallback for UI
       setConfirmedAs('mama'); 
     } finally {
       setIsConfirming(false);
     }
   };
+
+  if (loading) return <div className="min-h-screen bg-[#fce7f3] flex items-center justify-center font-boss text-2xl uppercase tracking-widest text-girl-pink">Sincronizando Archivos...</div>;
+
+  if (error || (!invitation && slug !== 'page')) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-pink-50 flex flex-col items-center justify-center p-6 text-center">
+        <div className="bg-white p-10 rounded-[2.5rem] shadow-2xl border-4 border-white flex flex-col items-center gap-6 max-w-sm">
+          <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center text-red-500">
+            <Users size={40} />
+          </div>
+          <h1 className="font-boss text-2xl uppercase text-gray-800">Acceso Denegado</h1>
+          <p className="text-sm font-medium text-gray-500 uppercase tracking-widest leading-relaxed">
+            Esta invitación no es válida o ha sido revocada por la administración.
+          </p>
+          <div className="w-full h-1 bg-gray-100 rounded-full" />
+          <p className="text-[10px] font-bold text-gray-400 uppercase">SOLO PERSONAL AUTORIZADO</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#e0f2fe] via-[#fce7f3] to-[#fbcfe8] text-[#191C1D] flex flex-col items-center overflow-x-hidden font-inter relative select-none">
