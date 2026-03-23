@@ -80,17 +80,17 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
         {!isOpen ? (
           <motion.div key="envelope-view" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }} className="w-full min-h-screen flex flex-col items-center justify-center p-6 text-center relative z-10">
             <motion.p initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-sm tracking-[0.3em] text-gray-700 uppercase mb-2 font-medium">TE INVITAMOS A NUESTRA</motion.p>
-            <div className="flex flex-col items-center justify-center mb-12">
-              <h1 className="font-elegant text-7xl text-boy-blue drop-shadow-sm -mb-4 z-10">Revelación</h1>
-              <h1 className="font-elegant text-6xl text-girl-pink drop-shadow-sm ml-12">De género</h1>
+            <div className="flex flex-col items-center justify-center mb-16 scale-125">
+              <h1 className="font-elegant text-8xl text-boy-blue drop-shadow-md -mb-6 z-10 italic">Revelación</h1>
+              <h1 className="font-elegant text-7xl text-girl-pink drop-shadow-md ml-16 italic">De género</h1>
             </div>
             <div className="relative mt-8 group cursor-pointer" onClick={() => setIsOpen(true)}>
               <div className="w-[300px] h-[200px] bg-white rounded-lg shadow-xl relative overflow-hidden flex items-center justify-center border border-gray-100">
                 <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 300 200"><path d="M0,0 L150,100 L300,0" fill="none" stroke="#000" strokeWidth="2" opacity="0.1"/></svg>
               </div>
-              <motion.div className="absolute -top-[140px] left-1/2 -translate-x-1/2 flex items-end justify-center w-[300px] pointer-events-none" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
-                <div className="w-[110px] h-[120px] relative top-4 ml-8" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Boss Girl" fill className="object-contain" /></div>
-                <div className="w-[140px] h-[160px] relative ml-[-20px]" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boss Boy" fill className="object-contain" /></div>
+              <motion.div className="absolute -top-[160px] left-1/2 -translate-x-1/2 flex items-end justify-center w-[400px] pointer-events-none" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
+                <div className="w-[160px] h-[180px] relative top-4 mr-[-30px]" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boss Boy" fill className="object-contain" /></div>
+                <div className="w-[140px] h-[150px] relative ml-[-30px] z-20" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Boss Girl" fill className="object-contain" /></div>
               </motion.div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full shadow-lg border-2 border-white flex items-center justify-center overflow-hidden" style={{ background: "linear-gradient(90deg, #FFB6C1 50%, #87CEEB 50%)" }}>
                  <div className="w-14 h-14 rounded-full border border-white/40 shadow-inner flex items-center justify-center bg-transparent backdrop-blur-sm"><div className="w-8 h-8 rounded-full bg-white/20"></div></div>
@@ -114,18 +114,21 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
             </div>
             <div className="text-center mb-8">
                <p className="text-[10px] md:text-xs tracking-widest text-gray-600 uppercase mb-4 font-medium">¡LA DULCE ESPERA ESTÁ POR TERMINAR!</p>
-               <div className="flex flex-col items-center justify-center mb-6 relative z-10 w-full space-y-[-10px]">
-                  <h1 className="font-elegant text-6xl text-boy-blue drop-shadow-sm relative z-10">Revelación</h1>
-                  <h1 className="font-elegant text-5xl text-girl-pink drop-shadow-sm ml-6 relative z-20">De género</h1>
+               <div className="flex flex-col items-center justify-center mb-10 relative z-10 w-full space-y-[-15px] scale-110">
+                  <h1 className="font-elegant text-7xl text-boy-blue drop-shadow-md relative z-10 italic">Revelación</h1>
+                  <h1 className="font-elegant text-6xl text-girl-pink drop-shadow-md ml-12 relative z-20 italic">De género</h1>
                </div>
             </div>
-            <div className="flex justify-center items-end gap-0 mb-8 h-40 relative w-full">
-                <div className="w-[140px] h-full relative" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boss Boy" fill className="object-contain" /></div>
-                <div className="w-[110px] h-[75%] relative" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Boss Girl" fill className="object-contain" /></div>
+            <div className="flex justify-center items-end gap-0 mb-10 h-52 relative w-full">
+                <div className="w-[180px] h-full relative mr-[-40px]" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boss Boy" fill className="object-contain" /></div>
+                <div className="w-[150px] h-[85%] relative ml-[-40px] z-10" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Boss Girl" fill className="object-contain" /></div>
             </div>
             <div className="text-center px-4 mb-4">
-               <p className="text-[14px] font-bold text-gray-800 mb-2 tracking-wide font-inter">¡HOLA {nombre.toUpperCase()}!</p>
-               <p className="text-[12px] font-bold text-gray-600 mb-6 tracking-[0.2em] font-inter">({cupos} CUPOS)</p>
+               <p className="text-[24px] font-boss text-gray-800 mb-2 tracking-widest">¡HOLA {nombre.toUpperCase()}!</p>
+               <p className="text-[12px] font-bold text-gray-600 mb-2 tracking-[0.2em] font-inter">({cupos} CUPOS)</p>
+               <p className="text-[10px] uppercase tracking-widest text-boy-blue leading-relaxed font-extrabold mb-6">
+                 MIS PAPITOS DAYAN Y DIEGO HAN RESERVADO {cupos} ESPACIOS PARA TI
+               </p>
                <p className="text-[10px] uppercase tracking-widest text-gray-700 leading-relaxed font-semibold">UN NUEVO INTEGRANTE ESTÁ POR LLEGAR A ESTA FAMILIA.<br/>CON AMOR E ILUSIÓN ESPERAMOS SU LLEGADA.<br/>GRACIAS POR SER PARTE DE ESTA ALEGRÍA.</p>
             </div>
             <div className="w-full flex flex-col items-center mb-10 relative mt-8">
@@ -155,7 +158,7 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                <h2 className="font-elegant text-5xl text-girl-pink/80 mb-4 drop-shadow-sm">Confirmación</h2>
                <div className="flex flex-col gap-3 w-full px-12 items-center">
                   {!confirmedAs ? (
-                     <button onClick={handleConfirm} disabled={isConfirming} className="w-[240px] bg-gradient-to-r from-boy-blue to-girl-pink text-white py-4 rounded-full shadow-xl flex items-center justify-center gap-3 border-2 border-white"><MessageCircleHeart size={20} /><span className="font-bold tracking-widest text-[11px]">CONFIRMAR ASISTENCIA</span></button>
+                     <button onClick={handleConfirm} disabled={isConfirming} className="w-[260px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white py-5 rounded-full shadow-[0_10px_30px_rgba(168,85,247,0.4)] flex items-center justify-center gap-3 border-2 border-white/50 active:scale-95 transition-all"><MessageCircleHeart size={24} className="animate-pulse" /><span className="font-boss tracking-widest text-[13px] uppercase">Confirmar Asistencia</span></button>
                   ) : (
                   <div className="w-[240px] py-4 rounded-full shadow-xl flex items-center justify-center gap-2 text-white bg-green-500 border-2 border-white"><CheckCircle2 size={20} /><span className="font-bold tracking-widest text-[11px]">¡CONÉCTATE CON ÉXITO!</span></div>
                   )}
@@ -163,7 +166,10 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
             </div>
             {/* 9. Teams Section (Interactive Version) */}
             <div className="w-full flex flex-col items-center mb-20 relative bg-white/40 p-6 rounded-[2.5rem] backdrop-blur-md border-2 border-white shadow-xl">
-              <h2 className="font-boss text-2xl text-gray-800 mb-6 uppercase tracking-widest text-center w-full">¿QUÉ TEAM ERES?</h2>
+              <div className="text-center w-full mb-6">
+                <h2 className="font-boss text-2xl text-gray-800 mb-1 uppercase tracking-widest">¿QUÉ TEAM ERES?</h2>
+                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider italic">selecciona si piensas que será niño o niña</p>
+              </div>
               
               <div className="flex justify-between w-full gap-4 relative">
                 {/* Confetti Particles Layer */}
@@ -197,12 +203,12 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTeamSelect('boy')}
-                  className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'boy' ? 'bg-[#87CEEB] border-white shadow-lg' : 'bg-white/50 border-transparent'}`}
+                  className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'boy' ? 'bg-[#87CEEB] border-white shadow-lg' : 'bg-white/50 border-transparent text-blue-400'}`}
                 >
                   <div className="w-full h-24 mb-2 relative" style={{ filter: 'url(#remove-bg)' }}>
                     <Image src="/assets/user_boss_boy.png" alt="Boy" fill className="object-contain" />
                   </div>
-                  <span className={`font-boss tracking-wider text-xs uppercase ${selectedTeam === 'boy' ? 'text-white' : 'text-blue-500'}`}>NIÑO</span>
+                  <span className={`font-boss tracking-wider text-sm uppercase ${selectedTeam === 'boy' ? 'text-white' : ''}`}>NIÑO</span>
                 </motion.button>
 
                 {/* Team Girl Button */}
@@ -210,33 +216,54 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleTeamSelect('girl')}
-                  className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'girl' ? 'bg-[#FFB6C1] border-white shadow-lg' : 'bg-white/50 border-transparent'}`}
+                  className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'girl' ? 'bg-[#FFB6C1] border-white shadow-lg' : 'bg-white/50 border-transparent text-pink-400'}`}
                 >
                   <div className="w-full h-24 mb-2 relative" style={{ filter: 'url(#remove-bg)' }}>
                     <Image src="/assets/user_boss_girl.png" alt="Girl" fill className="object-contain" />
                   </div>
-                  <span className={`font-boss tracking-wider text-xs uppercase ${selectedTeam === 'girl' ? 'text-white' : 'text-pink-500'}`}>NIÑA</span>
+                  <span className={`font-boss tracking-wider text-sm uppercase ${selectedTeam === 'girl' ? 'text-white' : ''}`}>NIÑA</span>
                 </motion.button>
               </div>
 
-              {/* Dynamic Information Reveal */}
+              {/* Dynamic Information Reveal with Images */}
               <AnimatePresence mode="wait">
                 {selectedTeam && (
                   <motion.div 
                     key={selectedTeam}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
                     className="overflow-hidden w-full"
                   >
-                    <div className="mt-8 p-6 rounded-[1.5rem] border-2 border-white shadow-inner bg-white/60 text-center">
-                      <p className={`text-[11px] font-extrabold uppercase tracking-[0.2em] leading-relaxed ${selectedTeam === 'boy' ? 'text-blue-600' : 'text-pink-600'}`}>
-                        {selectedTeam === 'boy' ? (
-                          <>VISTE DE CELESTE Y<br/>TRAE PAÑALES</>
-                        ) : (
-                          <>VISTE DE ROSADO Y<br/>TRAE TOALLITAS</>
-                        )}
-                      </p>
+                    <div className="mt-8 p-6 rounded-[2rem] border-2 border-white shadow-inner bg-white/80 text-center flex flex-col items-center gap-6">
+                      <div className="flex justify-around w-full gap-4">
+                        <div className="flex flex-col items-center gap-2">
+                           <div className="w-20 h-20 relative p-2 bg-white rounded-2xl shadow-sm border border-gray-100">
+                             <Image 
+                               src={selectedTeam === 'boy' ? "/assets/shirt_boy.png" : "/assets/dress_girl.png"} 
+                               alt="Vestimenta" 
+                               fill 
+                               className="object-contain p-2" 
+                             />
+                           </div>
+                           <p className={`text-[9px] font-extrabold uppercase tracking-widest ${selectedTeam === 'boy' ? 'text-blue-500' : 'text-pink-500'}`}>
+                             {selectedTeam === 'boy' ? 'VEN DE CELESTE' : 'VEN DE ROSADO'}
+                           </p>
+                        </div>
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="w-20 h-20 relative p-2 bg-white rounded-2xl shadow-sm border border-gray-100">
+                             <Image 
+                               src={selectedTeam === 'boy' ? "/assets/diaper_boy.png" : "/assets/wipes_girl.png"} 
+                               alt="Regalo" 
+                               fill 
+                               className="object-contain p-2" 
+                             />
+                           </div>
+                           <p className={`text-[9px] font-extrabold uppercase tracking-widest ${selectedTeam === 'boy' ? 'text-blue-500' : 'text-pink-500'}`}>
+                             {selectedTeam === 'boy' ? 'TRAE PAÑALES' : 'TRAE TOALLITAS'}
+                           </p>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 )}
