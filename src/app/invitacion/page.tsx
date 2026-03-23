@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 
 
-export default function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
+function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
   const searchParams = useSearchParams();
