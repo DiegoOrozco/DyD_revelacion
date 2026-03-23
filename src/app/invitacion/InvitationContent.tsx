@@ -89,8 +89,9 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                 <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 300 200"><path d="M0,0 L150,100 L300,0" fill="none" stroke="#000" strokeWidth="2" opacity="0.1"/></svg>
               </div>
               <motion.div className="absolute -top-[160px] left-1/2 -translate-x-1/2 flex items-end justify-center w-[400px] pointer-events-none" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}>
-                <div className="w-[160px] h-[180px] relative top-4 mr-[-30px]" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boss Boy" fill className="object-contain" /></div>
-                <div className="w-[140px] h-[150px] relative ml-[-30px] z-20" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Boss Girl" fill className="object-contain" /></div>
+                <div className="w-[320px] h-[220px] relative top-8 z-20" style={{ filter: 'url(#remove-bg)' }}>
+                  <Image src="/assets/portada.png" alt="Boss Babies" fill className="object-contain" />
+                </div>
               </motion.div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full shadow-lg border-2 border-white flex items-center justify-center overflow-hidden" style={{ background: "linear-gradient(90deg, #FFB6C1 50%, #87CEEB 50%)" }}>
                  <div className="w-14 h-14 rounded-full border border-white/40 shadow-inner flex items-center justify-center bg-transparent backdrop-blur-sm"><div className="w-8 h-8 rounded-full bg-white/20"></div></div>
@@ -119,13 +120,13 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   <h1 className="font-elegant text-6xl text-girl-pink drop-shadow-md ml-12 relative z-20 italic">De género</h1>
                </div>
             </div>
-            <div className="flex justify-center items-end gap-0 mb-10 h-52 relative w-full">
-                <div className="w-[180px] h-full relative mr-[-40px]" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_boy.png" alt="Boss Boy" fill className="object-contain" /></div>
-                <div className="w-[150px] h-[85%] relative ml-[-40px] z-10" style={{ filter: 'url(#remove-bg)' }}><Image src="/assets/user_boss_girl.png" alt="Boss Girl" fill className="object-contain" /></div>
+            <div className="flex justify-center items-end gap-0 mb-10 h-60 relative w-full">
+                <div className="w-[360px] h-full relative z-10" style={{ filter: 'url(#remove-bg)' }}>
+                  <Image src="/assets/portada.png" alt="Boss Babies Unified" fill className="object-contain" />
+                </div>
             </div>
             <div className="text-center px-4 mb-4">
-               <p className="text-[24px] font-boss text-gray-800 mb-2 tracking-widest">¡HOLA {nombre.toUpperCase()}!</p>
-               <p className="text-[12px] font-bold text-gray-600 mb-2 tracking-[0.2em] font-inter">({cupos} CUPOS)</p>
+               <p className="text-[24px] font-boss text-gray-800 mb-2 tracking-widest uppercase">¡HOLA {nombre}!</p>
                <p className="text-[10px] uppercase tracking-widest text-boy-blue leading-relaxed font-extrabold mb-6">
                  MIS PAPITOS DAYAN Y DIEGO HAN RESERVADO {cupos} ESPACIOS PARA TI
                </p>
