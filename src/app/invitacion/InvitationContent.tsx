@@ -73,14 +73,14 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
     <main className="min-h-screen bg-gradient-to-b from-[#e0f2fe] via-[#fce7f3] to-[#fbcfe8] text-[#191C1D] flex flex-col items-center overflow-x-hidden font-inter relative select-none">
       <svg style={{ position: 'absolute', width: 0, height: 0 }} aria-hidden="true">
         <filter id="remove-bg" colorInterpolationFilters="sRGB">
-          <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -1 -1 -1 3 0" />
+          <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -1.5 -1.5 -1.5 4.5 0" />
         </filter>
       </svg>
       <AnimatePresence mode="wait">
         {!isOpen ? (
           <motion.div key="envelope-view" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }} className="w-full min-h-screen flex flex-col items-center justify-center p-6 text-center relative z-10">
-            <motion.p initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-sm tracking-[0.3em] text-gray-700 uppercase mb-2 font-medium">TE INVITAMOS A NUESTRA</motion.p>
-            <div className="flex flex-col items-center justify-center mb-16 scale-125">
+            <motion.p initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="text-sm tracking-[0.4em] text-gray-700 uppercase mb-8 font-bold">TE INVITAMOS A NUESTRA</motion.p>
+            <div className="flex flex-col items-center justify-center mb-16 scale-110">
               <h1 className="font-elegant text-8xl text-boy-blue drop-shadow-md -mb-6 z-10 italic">Revelación</h1>
               <h1 className="font-elegant text-7xl text-girl-pink drop-shadow-md ml-16 italic">De género</h1>
             </div>
@@ -113,11 +113,11 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                 <p className="text-[10px] font-bold text-white uppercase tracking-widest">Video Especial</p>
               </div>
             </div>
-            <div className="text-center mb-8">
-               <p className="text-[10px] md:text-xs tracking-widest text-gray-600 uppercase mb-4 font-medium">¡LA DULCE ESPERA ESTÁ POR TERMINAR!</p>
-               <div className="flex flex-col items-center justify-center mb-10 relative z-10 w-full space-y-[-15px] scale-110">
-                  <h1 className="font-elegant text-7xl text-boy-blue drop-shadow-md relative z-10 italic">Revelación</h1>
-                  <h1 className="font-elegant text-6xl text-girl-pink drop-shadow-md ml-12 relative z-20 italic">De género</h1>
+             <div className="text-center mb-10 pt-4">
+               <p className="text-[10px] md:text-xs tracking-[0.4em] text-gray-600 uppercase mb-8 font-bold">¡LA DULCE ESPERA ESTÁ POR TERMINAR!</p>
+               <div className="flex flex-col items-center justify-center mb-10 relative z-10 w-full space-y-[-10px] scale-100">
+                  <h1 className="font-elegant text-6xl text-boy-blue drop-shadow-md relative z-10 italic">Revelación</h1>
+                  <h1 className="font-elegant text-5xl text-girl-pink drop-shadow-md ml-12 relative z-20 italic">De género</h1>
                </div>
             </div>
             <div className="flex justify-center items-end gap-0 mb-10 h-60 relative w-full">
