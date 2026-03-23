@@ -18,26 +18,30 @@ export default function AdminPage() {
   const [generatedLink, setGeneratedLink] = useState('');
   const [confirmations, setConfirmations] = useState<Confirmation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [password, setPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetchConfirmations();
-    
-    // Subscribe to real-time updates
-    const channel = supabase
-      .channel('schema-db-changes')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'confirmations' },
-        () => {
-          fetchConfirmations();
-        }
-      )
-      .subscribe();
+    if (isAuthenticated) {
+      fetchConfirmations();
+      
+      const channel = supabase
+        .channel('schema-db-changes')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'confirmations' },
+          () => {
+            fetchConfirmations();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [isAuthenticated]);
 
   const fetchConfirmations = async () => {
     try {
@@ -61,14 +65,55 @@ export default function AdminPage() {
     const encodedName = encodeURIComponent(guestName.trim().replace(/\s+/g, '-'));
     const link = `${baseUrl}/invitacion/${encodedName}_${slots}`;
     setGeneratedLink(link);
+    setCopied(false);
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedLink);
-    // In a real app, I'd show a toast here
+    if (!generatedLink) return;
+    navigator.clipboard.writeText(generatedLink).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const checkPassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'bossbaby2026') {
+      setIsAuthenticated(true);
+    } else {
+      alert('Contraseña Incorrecta');
+    }
   };
 
   const totalConfirmed = confirmations.reduce((acc, curr) => acc + curr.slots_assigned, 0);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-boss flex items-center justify-center p-6">
+        <motion.form 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onSubmit={checkPassword}
+          className="bg-white p-10 rounded-3xl shadow-2xl flex flex-col items-center gap-6 max-w-xs w-full"
+        >
+          <div className="bg-boss p-4 rounded-2xl text-white">
+            <Briefcase size={48} />
+          </div>
+          <h1 className="font-boss text-2xl uppercase text-center">Solo Personal Autorizado</h1>
+          <input 
+            type="password" 
+            placeholder="Contraseña Ejecutiva"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-4 bg-gray-50 rounded-xl border-2 border-transparent focus:border-boss outline-none font-bold text-center"
+          />
+          <button type="submit" className="w-full py-4 boss-gradient-blue text-white rounded-xl font-boss uppercase shadow-lg">
+            Ingresar
+          </button>
+        </motion.form>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F0F2F5] text-[#191C1D] p-4 md:p-10 font-inter">
@@ -147,14 +192,13 @@ export default function AdminPage() {
                 className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100 flex flex-col gap-2"
               >
                 <p className="text-xs font-bold text-blue-800 uppercase">LINK PARA WHATSAPP</p>
-                <div className="flex items-center gap-2">
-                  <input 
-                    readOnly 
-                    value={generatedLink}
-                    className="flex-1 bg-transparent text-sm overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none"
-                  />
-                  <button onClick={copyToClipboard} className="text-blue-600 hover:text-blue-800">
-                    <Copy size={18} />
+                <div className="flex items-center gap-2 overflow-hidden">
+                  <span className="truncate flex-1 text-sm bg-white/50 p-2 rounded">{generatedLink}</span>
+                  <button 
+                    onClick={copyToClipboard} 
+                    className={`p-2 rounded-lg transition-all ${copied ? 'bg-green-500 text-white' : 'text-blue-600 hover:bg-blue-100'}`}
+                  >
+                    {copied ? <CheckCircle size={18} /> : <Copy size={18} />}
                   </button>
                 </div>
               </motion.div>

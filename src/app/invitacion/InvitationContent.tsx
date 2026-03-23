@@ -106,13 +106,23 @@ function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
                <div className="flex items-center gap-4 w-full justify-center text-gray-800">
                   <div className="flex flex-col items-center border-y border-gray-400/30 py-1 w-20"><span className="text-[11px] uppercase tracking-widest font-bold">ABRIL</span></div>
                   <div className="flex flex-col items-center px-2"><span className="text-[10px] uppercase tracking-widest font-medium mb-[-5px]">SÁBADO</span><span className="text-6xl font-elegant text-boy-blue leading-none">11</span></div>
-                  <div className="flex flex-col items-center border-y border-gray-400/30 py-1 w-20"><span className="text-[11px] uppercase tracking-widest font-bold">16:00 HRS</span></div>
+                  <div className="flex flex-col items-center border-y border-gray-400/30 py-1 w-20">
+                     <span className="text-[11px] uppercase tracking-widest font-bold">3:30 PM</span>
+                  </div>
                </div>
             </div>
             <div className="w-full flex flex-col items-center mb-16 text-center px-4">
                <h2 className="font-elegant text-4xl text-girl-pink/80 mb-2 drop-shadow-sm">Dirección</h2>
-               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-700 leading-relaxed mb-4">Salón de Conferencias "La Cuna"<br/>CALLE DE LOS BEBÉS #07575, PUENTE ALTO</p>
-               <button onClick={() => window.open('https://waze.com/ul?q=Calle+Ficticia+123', '_blank')} className="bg-[#87CEEB] text-white px-8 py-3 rounded-full shadow-md hover:bg-blue-400 font-bold tracking-wider text-xs flex items-center gap-2 uppercase"><div className="bg-white rounded-full p-1"><CheckCircle2 size={16} className="text-[#87CEEB]"/></div>VER UBICACIÓN</button>
+               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-700 leading-relaxed mb-4">
+                  San Antonio del Cobre,<br/>San Antonio, Desamparados
+               </p>
+               <button onClick={() => window.open('https://waze.com/ul/hd1u0r6pmg', '_blank')} className="bg-[#87CEEB] text-white px-8 py-3 rounded-full shadow-md hover:bg-blue-400 font-bold tracking-wider text-xs flex items-center gap-2 uppercase">
+                 <div className="bg-white rounded-full p-1"><CheckCircle2 size={16} className="text-[#87CEEB]"/></div>
+                 VER UBICACIÓN
+               </button>
+               <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500 mt-6 leading-relaxed max-w-[280px]">
+                  AL MOMENTO DE LLEGAR, EN LA PORTERÍA INDICAR QUE VAN PARA LA CASA 15.
+               </p>
             </div>
             <div className="w-full text-center mb-16 relative z-20">
                <h2 className="font-elegant text-5xl text-girl-pink/80 mb-4 drop-shadow-sm">Confirmación</h2>
