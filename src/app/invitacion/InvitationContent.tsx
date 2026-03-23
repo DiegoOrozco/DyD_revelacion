@@ -114,7 +114,7 @@ function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
             <div className="w-full flex flex-col items-center mb-16 text-center px-4">
                <h2 className="font-elegant text-4xl text-girl-pink/80 mb-2 drop-shadow-sm">Dirección</h2>
                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-700 leading-relaxed mb-4">
-                  San Antonio del Cobre,<br/>San Antonio, Desamparados
+                  Condominio San Antonio del Cobre,<br/>San Antonio, Desamparados
                </p>
                <button onClick={() => window.open('https://waze.com/ul/hd1u0r6pmg', '_blank')} className="bg-[#87CEEB] text-white px-8 py-3 rounded-full shadow-md hover:bg-blue-400 font-bold tracking-wider text-xs flex items-center gap-2 uppercase">
                  <div className="bg-white rounded-full p-1"><CheckCircle2 size={16} className="text-[#87CEEB]"/></div>
