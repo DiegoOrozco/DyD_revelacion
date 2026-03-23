@@ -21,7 +21,12 @@ export default function AdminPage() {
   const [confirmations, setConfirmations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
   const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('admin_auth') === 'true';
+    }
+    return false;
+  });
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -119,6 +124,7 @@ export default function AdminPage() {
     e.preventDefault();
     if (password === 'bossbaby2026') {
       setIsAuthenticated(true);
+      sessionStorage.setItem('admin_auth', 'true');
     } else {
       alert('Contraseña Incorrecta');
     }

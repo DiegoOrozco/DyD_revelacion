@@ -213,7 +213,7 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   {!confirmedAs ? (
                      <button onClick={handleConfirm} disabled={isConfirming} className="w-[260px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white py-5 rounded-full shadow-[0_10px_30px_rgba(168,85,247,0.4)] flex items-center justify-center gap-3 border-2 border-white/50 active:scale-95 transition-all"><MessageCircleHeart size={24} className="animate-pulse" /><span className="font-boss tracking-widest text-[13px] uppercase">Confirmar Asistencia</span></button>
                   ) : (
-                  <div className="w-[240px] py-4 rounded-full shadow-xl flex items-center justify-center gap-2 text-white bg-green-500 border-2 border-white"><CheckCircle2 size={20} /><span className="font-bold tracking-widest text-[11px]">¡CONÉCTATE CON ÉXITO!</span></div>
+                  <div className="w-[240px] py-4 rounded-full shadow-xl flex items-center justify-center gap-2 text-white bg-green-500 border-2 border-white"><CheckCircle2 size={20} /><span className="font-bold tracking-widest text-[11px]">¡ASISTENCIA CONFIRMADA! 🎉</span></div>
                   )}
                </div>
             </div>
