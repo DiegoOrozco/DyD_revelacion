@@ -59,6 +59,23 @@ export default function AdminPage() {
     }
   };
 
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar a ${name}?`)) return;
+
+    try {
+      const { error } = await supabase
+        .from('confirmations')
+        .delete()
+        .match({ id });
+
+      if (error) throw error;
+      // UI will update automatically via subscription
+    } catch (err) {
+      console.error('Error deleting confirmation:', err);
+      alert('Error al eliminar al invitado');
+    }
+  };
+
   const generateLink = () => {
     if (!guestName) return;
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
@@ -229,7 +246,8 @@ export default function AdminPage() {
                   <tr className="text-left border-b border-gray-100">
                     <th className="pb-4 text-xs font-bold opacity-40 uppercase">Invitado</th>
                     <th className="pb-4 text-xs font-bold opacity-40 uppercase text-center">Cupos</th>
-                    <th className="pb-4 text-xs font-bold opacity-40 uppercase text-right">Confirmado a las</th>
+                    <th className="pb-4 text-xs font-bold opacity-40 uppercase text-center">Hora</th>
+                    <th className="pb-4 text-xs font-bold opacity-40 uppercase text-right">Acción</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -253,8 +271,17 @@ export default function AdminPage() {
                           </div>
                         </td>
                         <td className="py-5 text-center font-boss text-boss">{conf.slots_assigned}</td>
-                        <td className="py-5 text-right text-xs opacity-50">
+                        <td className="py-5 text-center text-xs opacity-50">
                           {new Date(conf.created_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
+                        </td>
+                        <td className="py-5 text-right">
+                          <button 
+                            onClick={() => handleDelete(conf.id, conf.guest_name)}
+                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="Eliminar Invitado"
+                          >
+                            <Trash2 size={18} />
+                          </button>
                         </td>
                       </tr>
                     ))
