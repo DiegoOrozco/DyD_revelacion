@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import InvitationClient from './InvitationClient';
+import { InvitationContent } from '../InvitationContent';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -27,5 +27,5 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default function Page({ params }: { params: Promise<{ slug: string }> }) {
-  return <InvitationClient params={params} />;
+  return <InvitationContent params={params} />;
 }

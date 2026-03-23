@@ -7,7 +7,7 @@ import { MessageCircleHeart, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 
-function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
+export function InvitationContent({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
   const searchParams = useSearchParams();
