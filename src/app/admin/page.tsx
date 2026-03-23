@@ -48,14 +48,14 @@ export default function AdminPage() {
   const fetchConfirmations = async () => {
     try {
       const { data, error } = await supabase
-        .from('confirmations')
+        .from('invitations')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       setConfirmations(data || []);
     } catch (err) {
-      console.error('Error fetching confirmations:', err);
+      console.error('Error fetching invitations:', err);
     } finally {
       setLoading(false);
     }
