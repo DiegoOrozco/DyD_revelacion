@@ -66,13 +66,15 @@ export default function AdminPage() {
       const { error } = await supabase
         .from('confirmations')
         .delete()
-        .match({ id });
+        .eq('id', id);
 
       if (error) throw error;
-      // UI will update automatically via subscription
+      
+      // Manual refresh as a fallback for the subscription
+      await fetchConfirmations();
     } catch (err) {
       console.error('Error deleting confirmation:', err);
-      alert('Error al eliminar al invitado');
+      alert('Error: Asegúrate de que los permisos de borrado (RLS) estén activos en tu Supabase');
     }
   };
 
