@@ -62,31 +62,49 @@ export default function AdminPage() {
   };
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`¿Estás seguro de que deseas eliminar a ${name}?`)) return;
+    if (!confirm(`¿Estás seguro de que deseas eliminar la invitación de ${name}?`)) return;
 
     try {
       const { error } = await supabase
-        .from('confirmations')
+        .from('invitations')
         .delete()
         .eq('id', id);
 
       if (error) throw error;
-      
-      // Manual refresh as a fallback for the subscription
       await fetchConfirmations();
     } catch (err) {
-      console.error('Error deleting confirmation:', err);
-      alert('Error: Asegúrate de que los permisos de borrado (RLS) estén activos en tu Supabase');
+      console.error('Error deleting:', err);
+      alert('Error al eliminar la invitación');
     }
   };
 
-  const generateLink = () => {
+  const generateLink = async () => {
     if (!guestName) return;
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    const encodedName = encodeURIComponent(guestName.trim().replace(/\s+/g, '-'));
-    const link = `${baseUrl}/invitacion/${encodedName}_${slots}`;
-    setGeneratedLink(link);
-    setCopied(false);
+
+    try {
+      // Insert a pending invitation record and get its UUID
+      const { data, error } = await supabase
+        .from('invitations')
+        .insert([{
+          guest_name: guestName.trim(),
+          slots_assigned: parseInt(slots),
+          ha_confirmado: false
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+      const link = `${baseUrl}/invitacion/${data.id}`;
+      setGeneratedLink(link);
+      setCopied(false);
+      setGuestName('');
+      setSlots('1');
+    } catch (err) {
+      console.error('Error generating invitation:', err);
+      alert('Error técnico al generar la invitación. Revisa la consola.');
+    }
   };
 
   const copyToClipboard = () => {
