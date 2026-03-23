@@ -58,8 +58,8 @@ export default function AdminPage() {
   const generateLink = () => {
     if (!guestName) return;
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    const encodedName = encodeURIComponent(guestName.trim());
-    const link = `${baseUrl}/invitacion?nombre=${encodedName}&cupos=${slots}`;
+    const encodedName = encodeURIComponent(guestName.trim().replace(/\s+/g, '-'));
+    const link = `${baseUrl}/invitacion/${encodedName}_${slots}`;
     setGeneratedLink(link);
   };
 
