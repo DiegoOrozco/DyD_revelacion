@@ -31,6 +31,26 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
   const [isConfirming, setIsConfirming] = useState(false);
   const [confirmedAs, setConfirmedAs] = useState<'mama' | 'papa' | null>(null);
   const [selectedTeam, setSelectedTeam] = useState<'boy' | 'girl' | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const triggerConfetti = () => {
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
+  };
+
+  const handleTeamSelect = (team: 'boy' | 'girl') => {
+    if (selectedTeam === team) {
+      setSelectedTeam(null);
+    } else {
+      setSelectedTeam(team);
+      triggerConfetti();
+    }
+  };
+
+  const particles = [
+    { emoji: '🍼', color: 'blue' }, { emoji: '🦆', color: 'blue' }, { emoji: '👕', color: 'blue' }, { emoji: '🧢', color: 'blue' }, { emoji: '🧸', color: 'blue' },
+    { emoji: '🎀', color: 'pink' }, { emoji: '👗', color: 'pink' }, { emoji: '🍭', color: 'pink' }, { emoji: '👑', color: 'pink' }, { emoji: '🍼', color: 'pink' }
+  ];
 
   const handleConfirm = async () => {
     setIsConfirming(true);
@@ -140,11 +160,36 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
               <h2 className="font-boss text-2xl text-gray-800 mb-6 uppercase tracking-widest text-center w-full">¿QUÉ TEAM ERES?</h2>
               
               <div className="flex justify-between w-full gap-4 relative">
+                {/* Confetti Particles Layer */}
+                <AnimatePresence>
+                  {showConfetti && Array.from({ length: 15 }).map((_, i) => {
+                    const myParticle = particles.filter(p => p.color === (selectedTeam === 'boy' ? 'blue' : 'pink'))[i % 5];
+                    return (
+                      <motion.div
+                        key={`confetti-${i}`}
+                        initial={{ opacity: 1, scale: 0, x: 0, y: 0 }}
+                        animate={{ 
+                          opacity: [1, 1, 0], 
+                          scale: [1, 1.5, 0.5],
+                          x: (Math.random() - 0.5) * 400, 
+                          y: (Math.random() - 0.5) * 400 - 100, 
+                          rotate: Math.random() * 360 
+                        }}
+                        transition={{ duration: 2.5, ease: "easeOut" }}
+                        className="fixed pointer-events-none z-50 text-3xl"
+                        style={{ left: '50%', top: '40%' }}
+                      >
+                        {myParticle.emoji}
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+
                 {/* Team Boy Button */}
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedTeam(selectedTeam === 'boy' ? null : 'boy')}
+                  onClick={() => handleTeamSelect('boy')}
                   className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'boy' ? 'bg-[#87CEEB] border-white shadow-lg' : 'bg-white/50 border-transparent'}`}
                 >
                   <div className="w-full h-24 mb-2 relative" style={{ filter: 'url(#remove-bg)' }}>
@@ -157,7 +202,7 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedTeam(selectedTeam === 'girl' ? null : 'girl')}
+                  onClick={() => handleTeamSelect('girl')}
                   className={`flex flex-col items-center w-1/2 p-4 rounded-3xl transition-all border-2 ${selectedTeam === 'girl' ? 'bg-[#FFB6C1] border-white shadow-lg' : 'bg-white/50 border-transparent'}`}
                 >
                   <div className="w-full h-24 mb-2 relative" style={{ filter: 'url(#remove-bg)' }}>
