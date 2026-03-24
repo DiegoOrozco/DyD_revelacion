@@ -160,6 +160,9 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                 className="w-full h-full object-cover"
                 poster="/assets/video.png"
                 playsInline
+                onEnded={() => {
+                  window.scrollBy({ top: 400, behavior: 'smooth' });
+                }}
               />
               <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30 pointer-events-none">
                 <p className="text-[10px] font-bold text-white uppercase tracking-widest">Video Especial</p>
