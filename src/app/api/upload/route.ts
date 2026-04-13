@@ -11,21 +11,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
     }
 
-    const driveEmail = process.env.DRIVE_EMAIL;
-    const drivePrivateKey = process.env.DRIVE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-    const driveFolderId = process.env.DRIVE_FOLDER_ID;
+    const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+    const serviceAccountKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
 
-    if (!driveEmail || !drivePrivateKey || !driveFolderId) {
+    if (!driveFolderId || !serviceAccountKey) {
       return NextResponse.json(
-        { error: 'Server configuration missing (Email, Private Key or Folder ID)' },
+        { error: 'Server configuration missing (Folder ID or Service Account Key)' },
         { status: 500 }
       );
     }
 
-    // Initialize JWT manually - Corrected constructor for newer versions
+    let credentials;
+    try {
+      credentials = JSON.parse(serviceAccountKey);
+      if (credentials.private_key) {
+        // Fix for Vercel stripping newlines
+        credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+      }
+    } catch (e) {
+      return NextResponse.json(
+        { error: 'Invalid Google Credentials JSON format' },
+        { status: 500 }
+      );
+    }
+
+    // Initialize JWT directly
     const auth = new google.auth.JWT({
-      email: driveEmail,
-      key: drivePrivateKey,
+      email: credentials.client_email,
+      key: credentials.private_key,
       scopes: ['https://www.googleapis.com/auth/drive'],
     });
 
