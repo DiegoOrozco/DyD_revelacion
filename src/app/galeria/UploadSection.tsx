@@ -42,27 +42,47 @@ export default function UploadSection() {
     setIsUploading(true);
     const filesToUpload = files.filter(f => f.status === 'pending');
     
-    for (const fileObj of filesToUpload) {
-      updateFileStatus(fileObj.id, 'uploading', 10);
-      
-      const formData = new FormData();
-      formData.append('file', fileObj.file);
+    try {
+      // 1. Get the best available GoFile server
+      const serverRes = await fetch('https://api.gofile.io/servers');
+      const serverData = await serverRes.json();
+      const server = serverData.data.servers[0].name;
 
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+      for (const fileObj of filesToUpload) {
+        updateFileStatus(fileObj.id, 'uploading', 50); // Set to 50% immediately to show activity
+        
+        const formData = new FormData();
+        formData.append('file', fileObj.file);
+        // hardcoded guest token perfectly configured to group everything in one folder
+        formData.append('token', 'xiwRULxu1mzn8AGOFxmJkmuFknzkV6Wq');
+        formData.append('folderId', '1d4e74f9-4eb5-4d61-818c-dfc73fcb8c0a');
 
-        if (response.ok) {
-          updateFileStatus(fileObj.id, 'success', 100);
-        } else {
+        try {
+          // 2. Upload directly to the specific server
+          const response = await fetch(`https://${server}.gofile.io/contents/uploadfile`, {
+            method: 'POST',
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.status === 'ok') {
+            updateFileStatus(fileObj.id, 'success', 100);
+          } else {
+            console.error('GoFile error:', result);
+            updateFileStatus(fileObj.id, 'error', 0);
+          }
+        } catch (err) {
+          console.error('Upload fetch error:', err);
           updateFileStatus(fileObj.id, 'error', 0);
         }
-      } catch (err) {
-        updateFileStatus(fileObj.id, 'error', 0);
       }
+    } catch(err) {
+      console.error('Error fetching server:', err);
+      // Fallback error status for all pending files if server fetch fails
+      filesToUpload.forEach(f => updateFileStatus(f.id, 'error', 0));
     }
+    
     setIsUploading(false);
   };
 
