@@ -3,7 +3,8 @@
 import { Suspense, useState, use, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircleHeart, CheckCircle2, Users } from 'lucide-react';
+import { MessageCircleHeart, CheckCircle2, Users, Camera } from 'lucide-react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 
@@ -324,6 +325,27 @@ export function InvitationContent({ params }: { params: Promise<{ slug: string }
                   </motion.div>
                 )}
               </AnimatePresence>
+            </div>
+
+            {/* Gallery Link Section */}
+            <div className="w-full mt-8 mb-12">
+               <div className="bg-gradient-to-br from-white/60 to-white/30 backdrop-blur-md p-8 rounded-[2.5rem] border-2 border-white shadow-xl text-center relative overflow-hidden group">
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-pink-400/10 rounded-full blur-3xl group-hover:bg-pink-400/20 transition-all" />
+                  <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-400/10 rounded-full blur-3xl group-hover:bg-blue-400/20 transition-all" />
+                  
+                  <h2 className="font-elegant text-5xl text-gray-800 mb-2 drop-shadow-sm">Nuestros Recuerdos</h2>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0c6780] mb-6">¿TOMASTE FOTOS O VIDEOS?</p>
+                  
+                  <p className="text-[11px] text-gray-600 uppercase tracking-widest leading-relaxed mb-8 font-semibold">
+                    NOS ENCANTARÍA TENER CADA MOMENTO <br/>
+                    GUARDADO PARA SIEMPRE.
+                  </p>
+
+                  <Link href="/galeria" className="inline-flex items-center gap-3 bg-white text-gray-800 px-8 py-4 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all border border-white/50 group/btn">
+                    <Camera size={20} className="text-girl-pink group-hover/btn:scale-110 transition-transform" />
+                    <span className="font-boss tracking-widest text-[11px] uppercase">SUBIR FOTOS Y VIDEOS</span>
+                  </Link>
+               </div>
             </div>
           </motion.div>
         )}
