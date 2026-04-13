@@ -22,13 +22,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Initialize JWT manually - this is much more stable on Vercel
-    const auth = new google.auth.JWT(
-      driveEmail,
-      undefined,
-      drivePrivateKey,
-      ['https://www.googleapis.com/auth/drive']
-    );
+    // Initialize JWT manually - Corrected constructor for newer versions
+    const auth = new google.auth.JWT({
+      email: driveEmail,
+      key: drivePrivateKey,
+      scopes: ['https://www.googleapis.com/auth/drive'],
+    });
 
     const drive = google.drive({ version: 'v3', auth });
     const uploadedFiles = [];
