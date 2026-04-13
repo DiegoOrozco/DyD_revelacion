@@ -77,13 +77,19 @@ export async function POST(request: Request) {
       files: uploadedFiles 
     });
   } catch (error: any) {
-    console.error('Google Drive Upload Error:', error);
-    // Return more specific error details to help debugging
+    console.error('Detailed Google Drive Error:', error);
+    
+    // Capturamos el mensaje exacto que devuelve Google en su respuesta interna
+    const googleErrorMessage = error.response?.data?.error?.message 
+      || error.errors?.[0]?.message 
+      || error.message;
+
     return NextResponse.json(
       { 
         error: 'Upload failed', 
-        details: error.errors?.[0]?.message || error.message,
-        code: error.code || 500
+        details: googleErrorMessage,
+        code: error.code || 500,
+        fullError: process.env.NODE_ENV === 'development' ? error : undefined
       },
       { status: 500 }
     );
