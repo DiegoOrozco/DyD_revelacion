@@ -11,54 +11,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No files uploaded' }, { status: 400 });
     }
 
-    const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
-    const serviceAccountKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-    const base64Key = process.env.GOOGLE_SERVICE_ACCOUNT_BASE64;
+    const driveEmail = process.env.DRIVE_EMAIL;
+    const drivePrivateKey = process.env.DRIVE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+    const driveFolderId = process.env.DRIVE_FOLDER_ID;
 
-    if (!driveFolderId || (!serviceAccountKey && !base64Key)) {
+    if (!driveEmail || !drivePrivateKey || !driveFolderId) {
       return NextResponse.json(
-        { error: 'Server configuration missing' },
+        { error: 'Server configuration missing (Email, Private Key or Folder ID)' },
         { status: 500 }
       );
     }
 
-    // Parse and fix Service Account Key
-    let credentials;
-    try {
-      if (base64Key) {
-        // If Base64 is provided, it's the most reliable method
-        // Clean any potential whitespace/newlines added during copy-paste
-        const cleanBase64 = base64Key.replace(/\s/g, '');
-        const decoded = Buffer.from(cleanBase64, 'base64').toString('utf-8');
-        credentials = JSON.parse(decoded);
-      } else if (serviceAccountKey) {
-        credentials = JSON.parse(serviceAccountKey);
-      }
-
-      if (credentials?.private_key) {
-        credentials.private_key = credentials.private_key
-          .replace(/\\n/g, '\n')
-          .replace(/\n\n/g, '\n')
-          .trim();
-      }
-    } catch (e) {
-      return NextResponse.json(
-        { error: 'Invalid Service Account JSON format' },
-        { status: 500 }
-      );
-    }
-
-    // Initialize Google Auth
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/drive'], // Broadened scope to allow writing to shared folders
-    });
+    // Initialize JWT manually - this is much more stable on Vercel
+    const auth = new google.auth.JWT(
+      driveEmail,
+      undefined,
+      drivePrivateKey,
+      ['https://www.googleapis.com/auth/drive']
+    );
 
     const drive = google.drive({ version: 'v3', auth });
     const uploadedFiles = [];
 
     for (const file of files) {
-      // Convert File to Buffer then to Stream
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const stream = new Readable();
@@ -84,24 +59,14 @@ export async function POST(request: Request) {
       uploadedFiles.push(response.data);
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      files: uploadedFiles 
-    });
+    return NextResponse.json({ success: true, files: uploadedFiles });
   } catch (error: any) {
-    console.error('Detailed Google Drive Error:', error);
-    
-    // Capturamos el mensaje exacto que devuelve Google en su respuesta interna
-    const googleErrorMessage = error.response?.data?.error?.message 
-      || error.errors?.[0]?.message 
-      || error.message;
-
+    console.error('Final Debug Error:', error);
     return NextResponse.json(
       { 
         error: 'Upload failed', 
-        details: googleErrorMessage,
-        code: error.code || 500,
-        fullError: process.env.NODE_ENV === 'development' ? error : undefined
+        details: error.message,
+        hint: 'Check if DRIVE_PRIVATE_KEY is correctly pasted with BEGIN/END markers'
       },
       { status: 500 }
     );
