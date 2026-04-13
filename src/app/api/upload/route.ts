@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     // Initialize Google Auth
     const auth = new google.auth.GoogleAuth({
       credentials,
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
+      scopes: ['https://www.googleapis.com/auth/drive'], // Broadened scope to allow writing to shared folders
     });
 
     const drive = google.drive({ version: 'v3', auth });
@@ -78,8 +78,13 @@ export async function POST(request: Request) {
     });
   } catch (error: any) {
     console.error('Google Drive Upload Error:', error);
+    // Return more specific error details to help debugging
     return NextResponse.json(
-      { error: 'Upload failed', details: error.message },
+      { 
+        error: 'Upload failed', 
+        details: error.errors?.[0]?.message || error.message,
+        code: error.code || 500
+      },
       { status: 500 }
     );
   }
