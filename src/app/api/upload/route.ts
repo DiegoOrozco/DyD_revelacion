@@ -13,10 +13,11 @@ export async function POST(request: Request) {
 
     const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
     const serviceAccountKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+    const base64Key = process.env.GOOGLE_SERVICE_ACCOUNT_BASE64;
 
-    if (!driveFolderId || !serviceAccountKey) {
+    if (!driveFolderId || (!serviceAccountKey && !base64Key)) {
       return NextResponse.json(
-        { error: 'Server configuration missing (Drive Folder ID or Service Account Key)' },
+        { error: 'Server configuration missing' },
         { status: 500 }
       );
     }
@@ -24,15 +25,19 @@ export async function POST(request: Request) {
     // Parse and fix Service Account Key
     let credentials;
     try {
-      credentials = JSON.parse(serviceAccountKey);
-      if (credentials.private_key) {
-        // Robust fix for the OSSL_UNSUPPORTED error:
-        // 1. Convert any literal "\\n" or "\n" text back into real newlines
-        // 2. Remove any extra escaping that might have been added by hosting providers
+      if (base64Key) {
+        // If Base64 is provided, it's the most reliable method
+        const decoded = Buffer.from(base64Key, 'base64').toString('utf-8');
+        credentials = JSON.parse(decoded);
+      } else if (serviceAccountKey) {
+        credentials = JSON.parse(serviceAccountKey);
+      }
+
+      if (credentials?.private_key) {
         credentials.private_key = credentials.private_key
-          .replace(/\\n/g, '\n')     // Handle escaped newlines
-          .replace(/\n\n/g, '\n')    // Prevent double newlines
-          .trim();                   // Remove trailing spaces/newlines
+          .replace(/\\n/g, '\n')
+          .replace(/\n\n/g, '\n')
+          .trim();
       }
     } catch (e) {
       return NextResponse.json(
