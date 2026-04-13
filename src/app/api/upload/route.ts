@@ -21,9 +21,24 @@ export async function POST(request: Request) {
       );
     }
 
+    // Parse and fix Service Account Key
+    let credentials;
+    try {
+      credentials = JSON.parse(serviceAccountKey);
+      if (credentials.private_key) {
+        // Fix for common newline issues when pasting keys into hosting providers
+        credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+      }
+    } catch (e) {
+      return NextResponse.json(
+        { error: 'Invalid Service Account JSON format' },
+        { status: 500 }
+      );
+    }
+
     // Initialize Google Auth
     const auth = new google.auth.GoogleAuth({
-      credentials: JSON.parse(serviceAccountKey),
+      credentials,
       scopes: ['https://www.googleapis.com/auth/drive.file'],
     });
 
