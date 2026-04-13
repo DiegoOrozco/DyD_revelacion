@@ -26,8 +26,13 @@ export async function POST(request: Request) {
     try {
       credentials = JSON.parse(serviceAccountKey);
       if (credentials.private_key) {
-        // Fix for common newline issues when pasting keys into hosting providers
-        credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+        // Robust fix for the OSSL_UNSUPPORTED error:
+        // 1. Convert any literal "\\n" or "\n" text back into real newlines
+        // 2. Remove any extra escaping that might have been added by hosting providers
+        credentials.private_key = credentials.private_key
+          .replace(/\\n/g, '\n')     // Handle escaped newlines
+          .replace(/\n\n/g, '\n')    // Prevent double newlines
+          .trim();                   // Remove trailing spaces/newlines
       }
     } catch (e) {
       return NextResponse.json(
