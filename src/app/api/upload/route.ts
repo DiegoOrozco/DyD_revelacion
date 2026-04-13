@@ -25,8 +25,20 @@ export async function POST(request: Request) {
     try {
       credentials = JSON.parse(serviceAccountKey);
       if (credentials.private_key) {
-        // Fix for Vercel stripping newlines
-        credentials.private_key = credentials.private_key.replace(/\\n/g, '\n');
+        // Bulletproof PEM rebuilding: Destroy any Vercel corruption and reconstruct the key
+        let keyText = credentials.private_key;
+        
+        // 1. Strip headers, footers, whitespace, and escaped newlines
+        keyText = keyText.replace(/-----BEGIN PRIVATE KEY-----/gi, '');
+        keyText = keyText.replace(/-----END PRIVATE KEY-----/gi, '');
+        keyText = keyText.replace(/\\n/g, ''); // Remove literal escaped \n
+        keyText = keyText.replace(/\s+/g, ''); // Remove all whitespace
+        
+        // 2. Re-chunk into exact 64 character lines as required by OpenSSL
+        const chunks = keyText.match(/.{1,64}/g) || [];
+        
+        // 3. Rebuild the perfect PEM string
+        credentials.private_key = `-----BEGIN PRIVATE KEY-----\n${chunks.join('\n')}\n-----END PRIVATE KEY-----\n`;
       }
     } catch (e) {
       return NextResponse.json(
