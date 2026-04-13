@@ -4,6 +4,18 @@ import GalleryContent from './GalleryContent';
 export const metadata = {
   title: 'Compartir Recuerdos | Revelación de Género',
   description: 'Sube tus fotos y videos para compartir con nosotros en este día especial.',
+  openGraph: {
+    title: 'Compartir Recuerdos | Revelación de Género',
+    description: 'Sube tus fotos y videos para compartir con nosotros en este día especial.',
+    images: ['/assets/portada.png'],
+    url: 'https://dyd-revelacion.vercel.app/galeria',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Compartir Recuerdos | Revelación de Género',
+    images: ['/assets/portada.png'],
+  }
 };
 
 export default function GalleryPage() {
