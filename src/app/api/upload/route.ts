@@ -27,7 +27,9 @@ export async function POST(request: Request) {
     try {
       if (base64Key) {
         // If Base64 is provided, it's the most reliable method
-        const decoded = Buffer.from(base64Key, 'base64').toString('utf-8');
+        // Clean any potential whitespace/newlines added during copy-paste
+        const cleanBase64 = base64Key.replace(/\s/g, '');
+        const decoded = Buffer.from(cleanBase64, 'base64').toString('utf-8');
         credentials = JSON.parse(decoded);
       } else if (serviceAccountKey) {
         credentials = JSON.parse(serviceAccountKey);
